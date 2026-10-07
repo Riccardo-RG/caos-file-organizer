@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172c2b">
+  <meta name="description" content="Riordina e rinomina i tuoi file, con anteprima e possibilità di annullare. Tutto sul tuo computer.">
+  <title>caos — Ogni file, al suo posto.</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="/messages.js"></script>
+  <script src="/i18n.js"></script>
+  <script src="/theme.js"></script>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Vai al contenuto</a>
+  <aside class="sidebar" aria-label="Navigazione principale">
+    <a class="brand" href="#riordina" aria-label="caos, pagina iniziale">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span>caos<span class="brand-dot">.</span></span>
+    </a>
+    <p class="brand-caption">MENO CAOS. PIÙ SPAZIO.</p>
+    <nav class="navigation">
+      <a class="nav-link active" href="#riordina" data-page="organize" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M3 11h18"/></svg>
+        Riordina <span class="nav-dot" aria-hidden="true"></span>
+      </a>
+      <a class="nav-link" href="#cronologia" data-page="history">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2.6 7.4M3 4v7h7M12 7v5l3 2"/></svg>
+        Cronologia <span class="nav-count" id="history-count" hidden>0</span>
+      </a>
+      <a class="nav-link" href="#come-funziona" data-page="help">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 0 1 5.2 1c0 2-2.6 2-2.6 4M12 17h.01"/></svg>
+        Come funziona
+      </a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="local-note">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="13" rx="2"/><path d="M8 21h8M12 16v5m-4-11 3 3 5-5"/></svg>
+        <strong>Il tuo computer.<br>I tuoi file.</strong>
+        <p>Nessun upload, nessun account.<br>Tutto resta qui.</p>
+      </div>
+      <div class="sidebar-footer"><span class="status-dot"></span> Spazio locale <span id="app-version">v1.0</span></div>
+    </div>
+  </aside>
+
+  <main id="main" class="main" tabindex="-1">
+    <div class="topbar">
+      <span class="topbar-caption">IL TUO PICCOLO ANGOLO DI ORDINE</span>
+      <div class="topbar-actions">
+        <div class="language-control">
+          <label for="language-preference">Lingua</label>
+          <select id="language-preference" aria-label="Lingua dell’interfaccia">
+            <option value="it" lang="it">Italiano</option>
+            <option value="en" lang="en">English</option>
+          </select>
+        </div>
+        <span class="privacy-pill"><span class="status-dot"></span> 100% locale</span>
+        <div class="theme-control">
+          <label for="theme-preference">
+            <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+            <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 13A8.5 8.5 0 0 1 11 3.5a8.5 8.5 0 1 0 9.5 9.5Z"/></svg>
+            Tema
+          </label>
+          <select id="theme-preference" aria-label="Tema dell’interfaccia">
+            <option value="system">Sistema</option>
+            <option value="light">Chiaro</option>
+            <option value="dark">Scuro</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <section id="page-organize" class="page" aria-labelledby="organize-heading">
+      <header class="page-header">
+        <div><p class="eyebrow">FACCIAMO SPAZIO</p><h1 id="organize-heading">Ogni file, al suo posto<span>.</span></h1><p class="page-description">Dal disordine a una cartella che respira. Decidi tu cosa cambia.</p></div>
+        <div class="header-doodle" aria-hidden="true"><svg viewBox="0 0 100 90"><path d="M18 40V23q0-5 5-5h19l8 9h28q5 0 5 5v39q0 5-5 5H23q-5 0-5-5"/><path d="M12 40h64q5 0 4 5l-6 26q-1 5-6 5H22q-5 0-6-5L9 45q-1-5 3-5Z"/><path d="m79 10 2-7m8 16 7-2m-5 15 6 3"/></svg></div>
+      </header>
+
+      <div class="notice error-notice" id="connection-error" role="alert" hidden></div>
+      <form id="organize-form" class="setup-card" novalidate>
+        <div class="step-heading"><span class="step-number">01</span><div><h2>Da dove cominciamo?</h2><p>Scegli la cartella da mettere in ordine.</p></div></div>
+        <label class="field-label" for="folder-path">Cartella di partenza</label>
+        <div class="path-row">
+          <div class="path-input-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9H3Z"/></svg><input id="folder-path" name="root" type="text" placeholder="Incolla un percorso oppure scegli una cartella" autocomplete="off" spellcheck="false" required aria-describedby="folder-hint"></div>
+          <button id="pick-folder" type="button" class="button button-secondary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9H3Z"/><path d="M12 11v6m-3-3h6"/></svg>Scegli cartella</button>
+        </div>
+        <div class="folder-shortcuts"><span id="folder-hint">Un punto di partenza:</span><button id="use-downloads" type="button" class="text-button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v5h14v-5"/></svg>Download</button><span class="shortcut-divider"></span><button id="use-demo" type="button" class="text-button">Prova con file di esempio <span aria-hidden="true">↗</span></button></div>
+
+        <div class="setup-divider"></div>
+        <div class="step-heading"><span class="step-number">02</span><div><h2>Il tuo modo di fare ordine</h2><p>Poche regole, tutte sotto il tuo controllo.</p></div></div>
+        <div class="options-grid">
+          <div class="option-field"><label class="field-label" for="grouping">Raggruppa i file</label><select id="grouping" name="grouping"><option value="type">Per tipo di file</option><option value="month">Per anno e mese</option><option value="type_month">Per tipo, poi anno e mese</option><option value="none">Non spostare, rinomina soltanto</option></select><p class="field-hint" id="grouping-hint">Immagini, Documenti, Video… ognuno a casa sua.</p></div>
+          <div class="option-field"><label class="field-label" for="rename">Rinomina i file</label><select id="rename" name="rename"><option value="keep">Mantieni i nomi originali</option><option value="clean">Pulisci e uniforma i nomi</option><option value="sequence">Usa un nome e un numero</option></select><p class="field-hint" id="rename-hint">I nomi restano esattamente come sono.</p></div>
+          <div class="option-field"><span class="field-label">Quanto in profondità?</span><label class="toggle-card" for="recursive"><span>Includi sottocartelle</span><input type="checkbox" id="recursive" name="recursive"><span class="toggle" aria-hidden="true"></span></label><p class="field-hint" id="recursive-hint">Disattivato: solo i file nella cartella scelta.</p></div>
+        </div>
+        <div class="prefix-row" id="prefix-row" hidden><label class="field-label" for="prefix">Nome di base</label><input id="prefix" name="prefix" type="text" value="file" maxlength="80" autocomplete="off" spellcheck="false"><span class="field-hint">Per esempio: vacanza-001.jpg, vacanza-002.jpg</span></div>
+        <fieldset class="categories"><legend class="field-label">Quali file includiamo?</legend><div class="category-chips">
+          <label class="category-chip"><input type="checkbox" name="categories" value="images" checked><span><i class="category-dot images"></i>Immagini</span></label>
+          <label class="category-chip"><input type="checkbox" name="categories" value="documents" checked><span><i class="category-dot documents"></i>Documenti</span></label>
+          <label class="category-chip"><input type="checkbox" name="categories" value="archives" checked><span><i class="category-dot archives"></i>Archivi</span></label>
+          <label class="category-chip"><input type="checkbox" name="categories" value="audio" checked><span><i class="category-dot audio"></i>Audio</span></label>
+          <label class="category-chip"><input type="checkbox" name="categories" value="video" checked><span><i class="category-dot video"></i>Video</span></label>
+          <label class="category-chip"><input type="checkbox" name="categories" value="code" checked><span><i class="category-dot code"></i>Codice</span></label>
+          <label class="category-chip"><input type="checkbox" name="categories" value="other" checked><span><i class="category-dot other"></i>Altro</span></label>
+        </div></fieldset>
+        <div class="setup-footer"><p><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>Prima guardi l’anteprima. Poi decidi.</p><button class="button button-primary" type="submit" id="preview-button">Genera anteprima <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+      </form>
+
+      <section class="preview-card" aria-labelledby="preview-heading" id="preview-section">
+        <div class="preview-header"><div class="step-heading"><span class="step-number">03</span><div><h2 id="preview-heading">Un’occhiata prima di cominciare</h2><p id="preview-subtitle">Qui vedrai ogni cambiamento, prima che succeda.</p></div></div><span class="preview-label" id="preview-label">ANTEPRIMA</span></div>
+        <div id="preview-empty" class="empty-state">
+          <div class="empty-art" aria-hidden="true"><div class="paper paper-back"><span></span><span></span><span></span></div><div class="paper paper-front"><svg viewBox="0 0 32 32"><path d="m4 24 8-9 6 6 4-4 6 7"/><circle cx="23" cy="10" r="3"/></svg></div><span class="art-spark spark-one">✧</span><span class="art-spark spark-two">+</span><span class="art-check">✓</span></div>
+          <h3>Il bello dell’ordine inizia qui.</h3><p>Scegli una cartella e genera l’anteprima.<br>Nessun file viene spostato in questo passaggio.</p><button type="button" id="empty-demo" class="text-button">Fai un giro con i file di esempio <span aria-hidden="true">→</span></button>
+        </div>
+        <div id="preview-content" hidden>
+          <div class="preview-stats" id="preview-stats" aria-label="Riepilogo anteprima"></div>
+          <div id="stale-warning" class="notice warning-notice" role="status" hidden>Hai cambiato cartella o regole. Genera una nuova anteprima per continuare.</div>
+          <div class="preview-toolbar"><div class="search-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg><input id="file-search" type="search" placeholder="Cerca un file…" aria-label="Cerca nell’anteprima"></div><select id="status-filter" aria-label="Filtra per stato"><option value="all">Tutti i file</option><option value="ready">Da riordinare</option><option value="unchanged">Già in ordine</option><option value="skipped">Esclusi</option></select><button id="select-ready" type="button" class="text-button">Seleziona tutti</button></div>
+          <div class="table-wrap"><table class="file-table"><thead><tr><th class="check-cell"><input type="checkbox" id="select-visible" aria-label="Seleziona tutti i file visibili pronti"></th><th>FILE ATTUALE <span class="table-heading-arrow" aria-hidden="true">→</span> NUOVA DESTINAZIONE</th><th>TIPO</th><th class="size-cell">DIMENSIONE</th><th>STATO</th></tr></thead><tbody id="file-rows"></tbody></table><div id="no-results" class="no-results" hidden>Nessun file corrisponde a questa ricerca.</div></div>
+          <div class="preview-footer"><div><strong id="selection-count">0 file selezionati</strong><p>Potrai annullare dalla Cronologia.</p></div><button type="button" id="apply-button" class="button button-primary" disabled>Riordina i file <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></button></div>
+        </div>
+        <div class="result-banner" id="result-banner" role="status" hidden></div>
+      </section>
+      <footer class="page-footer"><span>Fatto per fare spazio alle cose che contano.</span><span>Un po’ meno caos <span aria-hidden="true">✳</span></span></footer>
+    </section>
+
+    <section id="page-history" class="page" aria-labelledby="history-heading" hidden>
+      <header class="page-header"><div><p class="eyebrow">I CAMBIAMENTI, IN CHIARO</p><h1 id="history-heading">La tua cronologia<span>.</span></h1><p class="page-description">Tieni traccia dei cambiamenti e, se vuoi, torna indietro.</p></div><button class="button button-secondary" id="refresh-history" type="button">Aggiorna</button></header>
+      <div class="history-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2.6 7.4M3 4v7h7M12 7v5l3 2"/></svg><p>Annulla prima le operazioni più recenti. Per proteggere i tuoi file, il ripristino si ferma se trova un file modificato o una destinazione già occupata.</p></div>
+      <div id="history-list" class="history-list"></div>
+      <div class="empty-state standalone-empty" id="history-empty"><div class="history-empty-icon" aria-hidden="true">↶</div><h3>Una pagina ancora da scrivere.</h3><p>I tuoi riordini appariranno qui.<br>Con la possibilità di tornare sui tuoi passi.</p><a href="#riordina" class="button button-secondary">Cominciamo</a></div>
+    </section>
+
+    <section id="page-help" class="page" aria-labelledby="help-heading" hidden>
+      <header class="page-header"><div><p class="eyebrow">SEMPLICE, COME DOVREBBE ESSERE</p><h1 id="help-heading">Meno caos, in tre passi<span>.</span></h1><p class="page-description">Uno strumento piccolo, con rispetto per i tuoi file.</p></div></header>
+      <div class="help-steps"><article><span class="help-number">01</span><h2>Scegli il punto di partenza</h2><p>Una cartella di foto, documenti o il tuo Download. Puoi scegliere dal computer oppure incollare il percorso completo.</p></article><article><span class="help-number">02</span><h2>Decidi come riordinare</h2><p>Dividi per tipo, per mese o per entrambi. Mantieni i nomi, rendili più uniformi o usa una sequenza numerata.</p></article><article><span class="help-number">03</span><h2>Controlla e conferma</h2><p>L’anteprima ti mostra i percorsi finali. Seleziona i file che vuoi cambiare e applica. La Cronologia ti permette di annullare.</p></article></div>
+      <div class="help-details"><h2>Le cose utili da sapere</h2>
+        <details open><summary>Dove vengono messi i file?</summary><p>Le nuove cartelle vengono create dentro la cartella che scegli. Nell’anteprima trovi il percorso preciso di ogni file. Se scegli “Non spostare”, cambiano soltanto i nomi.</p></details>
+        <details><summary>La lingua cambia i nomi delle cartelle?</summary><p>No. La lingua riguarda l’interfaccia. Le cartelle delle categorie mantengono i nomi italiani (Immagini, Documenti, Archivi, Audio, Video, Codice, Altro), così i percorsi rimangono coerenti quando cambi lingua.</p></details>
+        <details><summary>Che data viene usata per i mesi?</summary><p>La data di ultima modifica del file. Per le foto può essere diversa dalla data di scatto. Controlla sempre l’anteprima.</p></details>
+        <details><summary>E se due file hanno lo stesso nome?</summary><p>I file esistenti non vengono sovrascritti. Quando necessario, viene aggiunto un numero al nome: vedrai il risultato nell’anteprima.</p></details>
+        <details><summary>Che cosa succede ai file esclusi?</summary><p>Restano dove sono. I file nascosti, i collegamenti simbolici e i file non inclusi nelle categorie scelte vengono ignorati. Le cartelle protette non vengono esplorate.</p></details>
+        <details><summary>Posso annullare dopo aver chiuso l’app?</summary><p>Sì, la cronologia viene salvata sul computer. Il ripristino verifica che i file siano ancora al loro posto e non siano cambiati. Se li modifichi o sposti con un’altra app, potrebbe non essere possibile annullare automaticamente.</p></details>
+        <details><summary>I miei file vengono caricati online?</summary><p>No. Il programma lavora sul tuo computer, senza account, servizi cloud o API a pagamento. I file di esempio sono una cartella separata, creata solo per provare l’app.</p></details>
+      </div><div class="help-cta"><p>Vuoi prendere confidenza?</p><button type="button" id="help-demo" class="button button-primary">Prova con file di esempio <span aria-hidden="true">→</span></button></div>
+    </section>
+  </main>
+
+  <dialog id="confirm-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-description">
+    <div class="dialog-content"><div id="dialog-icon" class="dialog-icon" aria-hidden="true">↗</div><h2 id="dialog-title"></h2><p id="dialog-description"></p><div id="dialog-details" class="dialog-details" hidden></div><div class="dialog-actions"><button type="button" id="dialog-cancel" class="button button-secondary">Ci ripenso</button><button type="button" id="dialog-confirm" class="button button-primary">Conferma</button></div></div>
+  </dialog>
+  <dialog id="folder-dialog" class="folder-dialog" aria-labelledby="folder-dialog-title" aria-describedby="folder-dialog-description">
+    <div class="dialog-content">
+      <div class="dialog-icon" aria-hidden="true">↳</div>
+      <h2 id="folder-dialog-title">Scegli la tua cartella</h2>
+      <p id="folder-dialog-description">Apri una sottocartella oppure usa quella corrente. In questo passaggio non cambia nessun file.</p>
+      <nav class="folder-places" aria-label="Cartelle personali">
+        <button type="button" class="button button-secondary" data-folder-place="home">Home</button>
+        <button type="button" class="button button-secondary" data-folder-place="downloads">Download</button>
+        <button type="button" class="button button-secondary" data-folder-place="documents">Documenti</button>
+        <button type="button" class="button button-secondary" data-folder-place="desktop">Scrivania</button>
+      </nav>
+      <form id="folder-location-form">
+        <label for="folder-browser-path" class="field-label">Percorso della cartella</label>
+        <div class="folder-location-row">
+          <button type="button" id="folder-up" class="button button-secondary" aria-label="Apri la cartella superiore" disabled>↑ Su</button>
+          <input id="folder-browser-path" type="text" autocomplete="off" spellcheck="false" placeholder="Incolla un percorso completo" aria-describedby="folder-browser-hint">
+          <button type="submit" class="button button-secondary">Apri</button>
+        </div>
+        <p id="folder-browser-hint" class="field-hint">Puoi anche incollare un percorso e premere Apri.</p>
+      </form>
+      <p class="folder-current"><span>Cartella corrente</span><strong id="folder-current-path">—</strong></p>
+      <div id="folder-browser-error" class="notice error-notice" role="alert" hidden></div>
+      <div id="folder-browser-reason" class="notice warning-notice" hidden></div>
+      <p id="folder-browser-status" class="folder-browser-status" role="status" aria-live="polite"></p>
+      <ul id="folder-list" class="folder-list" aria-label="Sottocartelle"></ul>
+      <div class="dialog-actions"><button type="button" id="folder-cancel" class="button button-secondary">Annulla</button><button type="button" id="folder-select" class="button button-primary" disabled>Usa questa cartella</button></div>
+    </div>
+  </dialog>
+  <div class="toast-region" id="toast-region" role="status" aria-live="polite" aria-atomic="false"></div>
+  <div class="busy-overlay" id="busy-overlay" hidden><div class="busy-box" role="status" aria-live="polite"><span class="spinner" aria-hidden="true"></span><strong id="busy-label">Un momento…</strong><span>Stiamo lavorando sul tuo computer.</span></div></div>
+</body>
+</html>

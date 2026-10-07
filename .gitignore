@@ -1,0 +1,41 @@
+# Local operation history and generated sample files
+/.caos-data/
+/esempi/
+
+# Generated release packages and build output
+/dist/
+/build/
+*.egg-info/
+
+# Python bytecode, virtual environments, and tool caches
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Local environment configuration and private key material
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Editor settings and temporary files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Operating-system metadata
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
