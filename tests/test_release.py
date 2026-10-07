@@ -84,6 +84,15 @@ class ReleaseTests(unittest.TestCase):
         finally:
             connection.close()
 
+    def test_loopback_startup_does_not_depend_on_dns(self):
+        with mock.patch.object(socket, "getfqdn", side_effect=AssertionError("Startup must not query DNS")):
+            httpd = self.make_server(port=0)
+        try:
+            self.assertEqual(httpd.server_name, "127.0.0.1")
+            self.assertGreater(httpd.server_port, 0)
+        finally:
+            httpd.server_close()
+
     def test_bind_failure_releases_history_lock_for_retry(self):
         with socket.socket() as occupied:
             occupied.bind(("127.0.0.1", 0))

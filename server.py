@@ -11,6 +11,7 @@ from pathlib import Path
 import secrets
 import signal
 import socket
+from socketserver import TCPServer
 import sys
 import tempfile
 import threading
@@ -36,6 +37,13 @@ class AlreadyRunning(ValueError):
 class CaosServer(ThreadingHTTPServer):
     daemon_threads = False  # Finish filesystem operations before shutting down.
     block_on_close = True
+
+    def server_bind(self):
+        # HTTPServer normally performs a reverse-DNS lookup here. A loopback
+        # application already knows its address; a slow resolver must not delay
+        # startup or require any external network access.
+        TCPServer.server_bind(self)
+        self.server_name, self.server_port = self.server_address[:2]
 
     def __init__(self, address, data_dir: Path, demo_parent: Path):
         data_dir.mkdir(parents=True, exist_ok=True, mode=0o700)

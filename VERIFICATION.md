@@ -6,7 +6,7 @@ This document records the validation scope for Caos 1.2.0. It describes observed
 
 The Python suite covers the file engine, local HTTP API, folder browser, startup and shutdown, and portable release. Tests use disposable files and temporary state directories.
 
-Local result: **71 tests passed, none skipped**, on macOS with Python 3.14.6. JavaScript syntax checks passed for all four scripts.
+Local result: **72 tests passed, none skipped**, on macOS with Python 3.14.6. JavaScript syntax checks passed for all four scripts.
 
 ```sh
 python3 build_release.py
@@ -32,6 +32,7 @@ Coverage includes:
 - Folder browsing without filesystem mutations, including blocked application and photo-library paths.
 - Unusual POSIX names and temporarily unavailable source folders.
 - Concurrent startup, occupied ports, idle connections, termination, and completion of active file operations before shutdown.
+- Loopback startup without reverse-DNS lookup, including environments with unavailable DNS resolution.
 
 The GitHub workflow runs the suite on macOS and Ubuntu with Python 3.10 and 3.14. See the repository's Actions tab for the result associated with a specific commit.
 
